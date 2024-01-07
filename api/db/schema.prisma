@@ -24,6 +24,7 @@ model User {
   salt                String
   resetToken          String?
   resetTokenExpiresAt DateTime?
+  todoLists TodoList[]
   webAuthnChallenge   String?          @unique
   credentials         UserCredential[]
 }
@@ -35,4 +36,22 @@ model UserCredential {
   publicKey  Bytes
   transports String?
   counter    BigInt
+}
+
+model TodoList {
+  id        Int         @id @default(autoincrement())
+  title     String
+  createdAt DateTime    @default(now())
+  userId    Int         // Foreign key to User
+  user      User        @relation(fields: [userId], references: [id])
+  items     TodoItem[]  // Relation field to TodoItem
+}
+
+model TodoItem {
+  id          Int       @id @default(autoincrement())
+  text        String
+  isDone      Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  todoListId  Int       // Foreign key to TodoList
+  todoList    TodoList  @relation(fields: [todoListId], references: [id])
 }
