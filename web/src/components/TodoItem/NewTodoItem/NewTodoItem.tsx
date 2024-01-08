@@ -1,10 +1,10 @@
+import type { CreateTodoItemInput } from 'types/graphql'
+
 import { navigate, routes } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
+import { useMutation, useQuery } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import TodoItemForm from 'src/components/TodoItem/TodoItemForm'
-
-import type { CreateTodoItemInput } from 'types/graphql'
 
 const CREATE_TODO_ITEM_MUTATION = gql`
   mutation CreateTodoItemMutation($input: CreateTodoItemInput!) {
@@ -13,11 +13,18 @@ const CREATE_TODO_ITEM_MUTATION = gql`
     }
   }
 `
+const GET_TODO_LISTS_QUERY = gql`
+  query GetTodoLists {
+    todoLists {
+      id
+      title
+    }
+  }
+`
 
 const NewTodoItem = () => {
-  const [createTodoItem, { loading, error }] = useMutation(
-    CREATE_TODO_ITEM_MUTATION,
-    {
+  const [createTodoItem, { loading: mutationLoading, error: mutationError }] =
+    useMutation(CREATE_TODO_ITEM_MUTATION, {
       onCompleted: () => {
         toast.success('TodoItem created')
         navigate(routes.todoItems())
@@ -25,12 +32,20 @@ const NewTodoItem = () => {
       onError: (error) => {
         toast.error(error.message)
       },
-    }
-  )
+    })
+
+  const {
+    data,
+    loading: queryLoading,
+    error: queryError,
+  } = useQuery(GET_TODO_LISTS_QUERY)
 
   const onSave = (input: CreateTodoItemInput) => {
     createTodoItem({ variables: { input } })
   }
+
+  const combinedLoading = mutationLoading || queryLoading
+  const combinedError = mutationError || queryError
 
   return (
     <div className="rw-segment">
@@ -38,7 +53,12 @@ const NewTodoItem = () => {
         <h2 className="rw-heading rw-heading-secondary">New TodoItem</h2>
       </header>
       <div className="rw-segment-main">
-        <TodoItemForm onSave={onSave} loading={loading} error={error} />
+        <TodoItemForm
+          onSave={onSave}
+          loading={combinedLoading}
+          error={combinedError}
+          todoLists={data?.todoLists}
+        />
       </div>
     </div>
   )

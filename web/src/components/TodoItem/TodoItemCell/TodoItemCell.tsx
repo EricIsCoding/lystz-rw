@@ -12,6 +12,7 @@ export const QUERY = gql`
       isDone
       createdAt
       todoListId
+      userId
     }
   }
 `

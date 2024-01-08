@@ -11,11 +11,18 @@ export const standard = defineScenario<Prisma.TodoItemCreateArgs>({
             title: 'String',
             user: {
               create: {
-                email: 'String908242',
+                email: 'String7347037',
                 hashedPassword: 'String',
                 salt: 'String',
               },
             },
+          },
+        },
+        user: {
+          create: {
+            email: 'String6036677',
+            hashedPassword: 'String',
+            salt: 'String',
           },
         },
       },
@@ -28,11 +35,18 @@ export const standard = defineScenario<Prisma.TodoItemCreateArgs>({
             title: 'String',
             user: {
               create: {
-                email: 'String3003967',
+                email: 'String2085520',
                 hashedPassword: 'String',
                 salt: 'String',
               },
             },
+          },
+        },
+        user: {
+          create: {
+            email: 'String4988863',
+            hashedPassword: 'String',
+            salt: 'String',
           },
         },
       },

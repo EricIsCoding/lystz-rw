@@ -1,3 +1,9 @@
+import type {
+  EditTodoItemById,
+  UpdateTodoItemInput,
+  TodoList,
+} from 'types/graphql'
+
 import {
   Form,
   FormError,
@@ -5,11 +11,9 @@ import {
   Label,
   TextField,
   CheckboxField,
-  NumberField,
   Submit,
+  RadioField,
 } from '@redwoodjs/forms'
-
-import type { EditTodoItemById, UpdateTodoItemInput } from 'types/graphql'
 import type { RWGqlError } from '@redwoodjs/forms'
 
 type FormTodoItem = NonNullable<EditTodoItemById['todoItem']>
@@ -19,11 +23,14 @@ interface TodoItemFormProps {
   onSave: (data: UpdateTodoItemInput, id?: FormTodoItem['id']) => void
   error: RWGqlError
   loading: boolean
+  todoLists: TodoList[]
+  userId: number
 }
 
 const TodoItemForm = (props: TodoItemFormProps) => {
   const onSubmit = (data: FormTodoItem) => {
-    props.onSave(data, props?.todoItem?.id)
+    const intParsedData = { ...data, todoListId: parseInt(data.todoListId) }
+    props.onSave(intParsedData, props?.todoItem?.id)
   }
 
   return (
@@ -71,21 +78,21 @@ const TodoItemForm = (props: TodoItemFormProps) => {
 
         <FieldError name="isDone" className="rw-field-error" />
 
-        <Label
-          name="todoListId"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Todo list id
-        </Label>
+        <h6>Todo List:</h6>
 
-        <NumberField
-          name="todoListId"
-          defaultValue={props.todoItem?.todoListId}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-          validation={{ required: true }}
-        />
+        {props.todoLists?.map((list) => (
+          <>
+            <Label
+              name="todoListId"
+              className="rw-label"
+              errorClassName="rw-label rw-label-error"
+            >
+              {list.title}
+            </Label>
+
+            <RadioField key={list.id} name="todoListId" value={list.id} />
+          </>
+        ))}
 
         <FieldError name="todoListId" className="rw-field-error" />
 

@@ -30,11 +30,16 @@ describe('todoItems', () => {
 
   scenario('creates a todoItem', async (scenario: StandardScenario) => {
     const result = await createTodoItem({
-      input: { text: 'String', todoListId: scenario.todoItem.two.todoListId },
+      input: {
+        text: 'String',
+        todoListId: scenario.todoItem.two.todoListId,
+        userId: scenario.todoItem.two.userId,
+      },
     })
 
     expect(result.text).toEqual('String')
     expect(result.todoListId).toEqual(scenario.todoItem.two.todoListId)
+    expect(result.userId).toEqual(scenario.todoItem.two.userId)
   })
 
   scenario('updates a todoItem', async (scenario: StandardScenario) => {

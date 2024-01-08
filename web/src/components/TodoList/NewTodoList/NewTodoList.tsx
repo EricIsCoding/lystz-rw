@@ -1,10 +1,10 @@
+import type { CreateTodoListInput } from 'types/graphql'
+
 import { navigate, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import TodoListForm from 'src/components/TodoList/TodoListForm'
-
-import type { CreateTodoListInput } from 'types/graphql'
 
 const CREATE_TODO_LIST_MUTATION = gql`
   mutation CreateTodoListMutation($input: CreateTodoListInput!) {

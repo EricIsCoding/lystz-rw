@@ -6,6 +6,8 @@ export const schema = gql`
     createdAt: DateTime!
     todoListId: Int!
     todoList: TodoList!
+    userId: Int!
+    user: User!
   }
 
   type Query {

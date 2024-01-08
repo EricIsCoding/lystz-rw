@@ -15,7 +15,6 @@ export const schema = gql`
 
   input CreateTodoListInput {
     title: String!
-    userId: Int!
   }
 
   input UpdateTodoListInput {
