@@ -7,11 +7,7 @@ import type {
 import { db } from 'src/lib/db'
 
 export const todoItems: QueryResolvers['todoItems'] = () => {
-  return db.todoItem.findMany({
-    where: {
-      userId: context.currentUser.id,
-    },
-  })
+  return db.todoItem.findMany({ where: { userId: context.currentUser.id } })
 }
 
 export const todoItem: QueryResolvers['todoItem'] = ({ id }) => {
@@ -23,7 +19,6 @@ export const todoItem: QueryResolvers['todoItem'] = ({ id }) => {
 export const createTodoItem: MutationResolvers['createTodoItem'] = ({
   input,
 }) => {
-  console.log({ ...input, userId: context.currentUser.id })
   return db.todoItem.create({
     data: { ...input, userId: context.currentUser.id },
   })

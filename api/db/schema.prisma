@@ -51,6 +51,7 @@ model TodoList {
 model TodoItem {
   id         Int      @id @default(autoincrement())
   text       String
+  description String?
   isDone     Boolean  @default(false)
   createdAt  DateTime @default(now())
   todoListId Int // Foreign key to TodoList

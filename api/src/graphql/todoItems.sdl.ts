@@ -2,6 +2,7 @@ export const schema = gql`
   type TodoItem {
     id: Int!
     text: String!
+    description: String
     isDone: Boolean!
     createdAt: DateTime!
     todoListId: Int!
@@ -17,14 +18,17 @@ export const schema = gql`
 
   input CreateTodoItemInput {
     text: String!
+    description: String
     isDone: Boolean!
     todoListId: Int!
   }
 
   input UpdateTodoItemInput {
     text: String
+    description: String
     isDone: Boolean
     todoListId: Int
+    userId: Int
   }
 
   type Mutation {

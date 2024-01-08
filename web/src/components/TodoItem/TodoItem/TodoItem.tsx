@@ -43,21 +43,15 @@ const TodoItem = ({ todoItem }: Props) => {
       <div className="bg-white shadow overflow-hidden sm:rounded-lg">
         <header className="px-4 py-5 sm:px-6 border-b border-gray-200">
           <h2 className="text-lg leading-6 font-medium text-gray-900">
-            TodoItem {todoItem.id} Detail
+            {todoItem.text}
           </h2>
         </header>
         <div className="border-t border-gray-200">
           <dl>
-            <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Id</dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {todoItem.id}
-              </dd>
-            </div>
             <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Text</dt>
+              <dt className="text-sm font-medium text-gray-500">Description</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {todoItem.text}
+                {todoItem.description}
               </dd>
             </div>
             <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -73,11 +67,9 @@ const TodoItem = ({ todoItem }: Props) => {
               </dd>
             </div>
             <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">
-                Todo list id
-              </dt>
+              <dt className="text-sm font-medium text-gray-500">Todo list:</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {todoItem.todoListId}
+                {todoItem.todoList.title}
               </dd>
             </div>
           </dl>

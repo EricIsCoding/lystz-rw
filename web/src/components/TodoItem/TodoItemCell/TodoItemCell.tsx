@@ -11,7 +11,10 @@ export const QUERY = gql`
       text
       isDone
       createdAt
-      todoListId
+      todoList {
+        title
+      }
+      description
     }
   }
 `

@@ -33,70 +33,85 @@ const TodoItemForm = (props: TodoItemFormProps) => {
   }
 
   return (
-    <div className="rw-form-wrapper">
+    <div className="p-4 bg-white rounded-lg shadow-md">
       <Form<FormTodoItem> onSubmit={onSubmit} error={props.error}>
-        <FormError
-          error={props.error}
-          wrapperClassName="rw-form-error-wrapper"
-          titleClassName="rw-form-error-title"
-          listClassName="rw-form-error-list"
-        />
+        {/* FormError component if needed */}
 
-        <Label
-          name="text"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Text
-        </Label>
+        <div className="mb-4">
+          <Label
+            name="text"
+            className="block text-sm font-medium text-gray-700"
+            errorClassName="text-sm font-medium text-red-600"
+          >
+            Title
+          </Label>
+          <TextField
+            name="text"
+            defaultValue={props.todoItem?.text}
+            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            errorClassName="border-red-500"
+            validation={{ required: true }}
+          />
+          <FieldError name="text" className="text-red-600 text-sm" />
+        </div>
 
-        <TextField
-          name="text"
-          defaultValue={props.todoItem?.text}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-          validation={{ required: true }}
-        />
+        <div className="mb-4">
+          <Label
+            name="description"
+            className="block text-sm font-medium text-gray-700"
+            errorClassName="text-sm font-medium text-red-600"
+          >
+            Description
+          </Label>
+          <TextField
+            name="description"
+            defaultValue={props.todoItem?.text}
+            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            errorClassName="border-red-500"
+            validation={{ required: false }}
+          />
+          <FieldError name="text" className="text-red-600 text-sm" />
+        </div>
 
-        <FieldError name="text" className="rw-field-error" />
+        <div className="mb-4">
+          <Label
+            name="isDone"
+            className="block text-sm font-medium text-gray-700"
+            errorClassName="text-sm font-medium text-red-600"
+          >
+            Is done
+          </Label>
+          <CheckboxField
+            name="isDone"
+            defaultChecked={props.todoItem?.isDone}
+            className="mt-1"
+            errorClassName="text-red-500"
+          />
+          <FieldError name="isDone" className="text-red-600 text-sm" />
+        </div>
 
-        <Label
-          name="isDone"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
-          Is done
-        </Label>
+        <div className="mb-4">
+          <h6 className="text-sm font-medium text-gray-700">Todo List:</h6>
+          {props.todoLists?.map((list) => (
+            <div key={list.id} className="mt-2">
+              <Label
+                name="todoListId"
+                className="text-sm font-medium text-gray-700"
+                errorClassName="text-sm font-medium text-red-600"
+              >
+                {list.title}
+              </Label>
+              <RadioField name="todoListId" value={list.id} className="mt-1" />
+              <FieldError name="todoListId" className="text-red-600 text-sm" />
+            </div>
+          ))}
+        </div>
 
-        <CheckboxField
-          name="isDone"
-          defaultChecked={props.todoItem?.isDone}
-          className="rw-input"
-          errorClassName="rw-input rw-input-error"
-        />
-
-        <FieldError name="isDone" className="rw-field-error" />
-
-        <h6>Todo List:</h6>
-
-        {props.todoLists?.map((list) => (
-          <>
-            <Label
-              name="todoListId"
-              className="rw-label"
-              errorClassName="rw-label rw-label-error"
-            >
-              {list.title}
-            </Label>
-
-            <RadioField key={list.id} name="todoListId" value={list.id} />
-          </>
-        ))}
-
-        <FieldError name="todoListId" className="rw-field-error" />
-
-        <div className="rw-button-group">
-          <Submit disabled={props.loading} className="rw-button rw-button-blue">
+        <div className="flex justify-end mt-6">
+          <Submit
+            disabled={props.loading}
+            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-teal-400 hover:bg-teal-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+          >
             Save
           </Submit>
         </div>

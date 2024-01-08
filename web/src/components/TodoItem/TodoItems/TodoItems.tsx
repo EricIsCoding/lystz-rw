@@ -60,7 +60,7 @@ const TodoItemsList = ({ todoItems }: FindTodoItems) => {
                 Created at: {timeTag(todoItem.createdAt)}
               </p>
               <p className="text-sm text-gray-600">
-                Todo list ID: {todoItem.todoListId}
+                Todo list: {todoItem.todoList.title}
               </p>
               <div className="mt-4 flex justify-start gap-2">
                 <Link
