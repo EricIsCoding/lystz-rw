@@ -8,6 +8,7 @@ export const schema = gql`
     resetTokenExpiresAt: DateTime
     todoLists: [TodoList]!
     webAuthnChallenge: String
+    TodoItem: [TodoItem]!
   }
 
   type Query {

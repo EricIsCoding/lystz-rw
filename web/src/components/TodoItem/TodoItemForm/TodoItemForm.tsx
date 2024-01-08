@@ -24,7 +24,6 @@ interface TodoItemFormProps {
   error: RWGqlError
   loading: boolean
   todoLists: TodoList[]
-  userId: number
 }
 
 const TodoItemForm = (props: TodoItemFormProps) => {
