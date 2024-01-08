@@ -53,7 +53,6 @@ const TodoListsList = ({ todoLists }: FindTodoLists) => {
                   {truncate(todoList.title)}
                 </Link>
               </h3>
-              <p className="text-sm text-gray-600 mt-2">ID: {todoList.id}</p>
               <p className="text-sm text-gray-600 mt-1">
                 Created at: {timeTag(todoList.createdAt)}
               </p>
