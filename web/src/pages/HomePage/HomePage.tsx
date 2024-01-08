@@ -24,7 +24,7 @@ const HomePage = () => {
                 Todo Items
               </Link>
               <button
-                className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 transition duration-300"
+                className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-black transition duration-300"
                 onClick={logOut}
               >
                 Logout

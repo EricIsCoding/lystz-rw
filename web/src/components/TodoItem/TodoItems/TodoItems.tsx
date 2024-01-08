@@ -1,14 +1,14 @@
+import type {
+  DeleteTodoItemMutationVariables,
+  FindTodoItems,
+} from 'types/graphql'
+
 import { Link, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import { QUERY } from 'src/components/TodoItem/TodoItemsCell'
-import { checkboxInputTag, timeTag, truncate } from 'src/lib/formatters'
-
-import type {
-  DeleteTodoItemMutationVariables,
-  FindTodoItems,
-} from 'types/graphql'
+import { timeTag, truncate } from 'src/lib/formatters'
 
 const DELETE_TODO_ITEM_MUTATION = gql`
   mutation DeleteTodoItemMutation($id: Int!) {
@@ -40,56 +40,47 @@ const TodoItemsList = ({ todoItems }: FindTodoItems) => {
   }
 
   return (
-    <div className="rw-segment rw-table-wrapper-responsive">
-      <table className="rw-table">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Text</th>
-            <th>Is done</th>
-            <th>Created at</th>
-            <th>Todo list id</th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-          {todoItems.map((todoItem) => (
-            <tr key={todoItem.id}>
-              <td>{truncate(todoItem.id)}</td>
-              <td>{truncate(todoItem.text)}</td>
-              <td>{checkboxInputTag(todoItem.isDone)}</td>
-              <td>{timeTag(todoItem.createdAt)}</td>
-              <td>{truncate(todoItem.todoListId)}</td>
-              <td>
-                <nav className="rw-table-actions">
-                  <Link
-                    to={routes.todoItem({ id: todoItem.id })}
-                    title={'Show todoItem ' + todoItem.id + ' detail'}
-                    className="rw-button rw-button-small"
-                  >
-                    Show
-                  </Link>
-                  <Link
-                    to={routes.editTodoItem({ id: todoItem.id })}
-                    title={'Edit todoItem ' + todoItem.id}
-                    className="rw-button rw-button-small rw-button-blue"
-                  >
-                    Edit
-                  </Link>
-                  <button
-                    type="button"
-                    title={'Delete todoItem ' + todoItem.id}
-                    className="rw-button rw-button-small rw-button-red"
-                    onClick={() => onDeleteClick(todoItem.id)}
-                  >
-                    Delete
-                  </button>
-                </nav>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {todoItems.map((todoItem) => (
+          <div
+            key={todoItem.id}
+            className="bg-white rounded-lg shadow overflow-hidden"
+          >
+            <div className="p-6">
+              <h3 className="text-lg font-medium text-gray-900 hover:text-teal-900">
+                <Link to={routes.todoItem({ id: todoItem.id })}>
+                  {truncate(todoItem.text)}
+                </Link>
+              </h3>
+              <p className="text-sm text-gray-600">
+                Is done: {truncate(todoItem.isDone.toString())}
+              </p>
+              <p className="text-sm text-gray-600">
+                Created at: {timeTag(todoItem.createdAt)}
+              </p>
+              <p className="text-sm text-gray-600">
+                Todo list ID: {todoItem.todoListId}
+              </p>
+              <div className="mt-4 flex justify-start gap-2">
+                <Link
+                  to={routes.editTodoItem({ id: todoItem.id })}
+                  className="text-teal-400 hover:text-teal-900"
+                >
+                  Edit
+                </Link>
+                <button
+                  type="button"
+                  className="text-red-500 hover:text-red-800"
+                  onClick={() => onDeleteClick(todoItem.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

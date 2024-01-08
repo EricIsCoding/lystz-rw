@@ -17,22 +17,37 @@ const ScaffoldLayout = ({
   children,
 }: LayoutProps) => {
   return (
-    <div className="rw-scaffold">
+    <div className="min-h-screen bg-gray-100">
       <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
-      <header className="rw-header">
-        <h1 className="rw-heading rw-heading-primary">
-          <Link to={routes[titleTo]()} className="rw-link">
-            {title}
-          </Link>
-        </h1>
-        <Link to={routes.home()} className="rw-button rw-button-green">
-          <div className="rw-button-icon">{'->'}</div> Go Home!
-        </Link>
-        <Link to={routes[buttonTo]()} className="rw-button rw-button-green">
-          <div className="rw-button-icon">+</div> {buttonLabel}
-        </Link>
+      <header className="bg-white shadow py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+          <h1 className="text-2xl font-semibold text-gray-800">
+            <Link
+              to={routes[titleTo]()}
+              className="text-black hover:text-teal-400"
+            >
+              {title}
+            </Link>
+          </h1>
+          <div className="flex gap-4">
+            <Link
+              to={routes.home()}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-900"
+            >
+              Go Home!
+            </Link>
+            <Link
+              to={routes[buttonTo]()}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-900"
+            >
+              <span className="mr-2">+</span> {buttonLabel}
+            </Link>
+          </div>
+        </div>
       </header>
-      <main className="rw-main">{children}</main>
+      <main className="py-6">
+        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">{children}</div>
+      </main>
     </div>
   )
 }
