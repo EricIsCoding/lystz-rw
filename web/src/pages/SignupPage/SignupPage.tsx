@@ -50,17 +50,20 @@ const SignupPage = () => {
     <>
       <Metadata title="Signup" />
 
-      <main className="rw-main">
+      <main className="min-h-screen bg-gray-100 py-6">
         <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
-        <div className="rw-scaffold rw-login-container">
-          <div className="rw-segment">
+        <div className="rw-scaffold rw-login-container mx-auto max-w-lg overflow-hidden rounded-lg shadow-lg">
+          <div className="rw-segment bg-white p-6">
             <header className="rw-segment-header">
-              <h2 className="rw-heading rw-heading-secondary">Signup</h2>
+              <h2 className="rw-heading rw-heading-secondary text-2xl font-semibold text-gray-800">
+                Signup
+              </h2>
             </header>
 
             <div className="rw-segment-main">
               <div className="rw-form-wrapper">
                 <Form onSubmit={onSubmit} className="rw-form-wrapper">
+                  {/* Username (Email) Field */}
                   <Label
                     name="usernameEmail"
                     className="rw-label"
@@ -70,8 +73,8 @@ const SignupPage = () => {
                   </Label>
                   <TextField
                     name="usernameEmail"
-                    className="rw-input"
-                    errorClassName="rw-input rw-input-error"
+                    className="rw-input w-full border-gray-300 focus:border-teal-400 focus:ring focus:ring-teal-200"
+                    errorClassName="rw-input rw-input-error border-red-500 focus:border-red-500 focus:ring focus:ring-red-200"
                     ref={usernameEmailRef}
                     validation={{
                       required: {
@@ -80,8 +83,12 @@ const SignupPage = () => {
                       },
                     }}
                   />
-                  <FieldError name="usernameEmail" className="rw-field-error" />
+                  <FieldError
+                    name="usernameEmail"
+                    className="rw-field-error text-red-500"
+                  />
 
+                  {/* Password Field */}
                   <Label
                     name="password"
                     className="rw-label"
@@ -91,8 +98,8 @@ const SignupPage = () => {
                   </Label>
                   <PasswordField
                     name="password"
-                    className="rw-input"
-                    errorClassName="rw-input rw-input-error"
+                    className="rw-input w-full border-gray-300 focus:border-teal-400 focus:ring focus:ring-teal-200"
+                    errorClassName="rw-input rw-input-error border-red-500 focus:border-red-500 focus:ring focus:ring-red-200"
                     autoComplete="current-password"
                     validation={{
                       required: {
@@ -101,10 +108,14 @@ const SignupPage = () => {
                       },
                     }}
                   />
-                  <FieldError name="password" className="rw-field-error" />
+                  <FieldError
+                    name="password"
+                    className="rw-field-error text-red-500"
+                  />
 
-                  <div className="rw-button-group">
-                    <Submit className="rw-button rw-button-blue">
+                  {/* Submit Button */}
+                  <div className="rw-button-group mt-4">
+                    <Submit className="rw-button w-full rounded-md bg-teal-600 px-4 py-2 text-white hover:bg-teal-900">
                       Sign Up
                     </Submit>
                   </div>
@@ -112,9 +123,12 @@ const SignupPage = () => {
               </div>
             </div>
           </div>
-          <div className="rw-login-link">
+          <div className="rw-login-link px-6 py-4 text-gray-800">
             <span>Already have an account?</span>{' '}
-            <Link to={routes.login()} className="rw-link">
+            <Link
+              to={routes.login()}
+              className="rw-link text-teal-600 hover:text-teal-900"
+            >
               Log in!
             </Link>
           </div>

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { useEffect } from 'react'
 
 import {
@@ -36,20 +36,14 @@ const LoginPage = ({ type }) => {
     if (isAuthenticated && (!shouldShowWebAuthn || webAuthn.isEnabled())) {
       navigate(REDIRECT)
     }
-  }, [isAuthenticated, shouldShowWebAuthn])
+  }, [isAuthenticated, shouldShowWebAuthn, webAuthn])
 
   // if WebAuthn is enabled, show the prompt as soon as the page loads
   useEffect(() => {
     if (!loading && !isAuthenticated && showWebAuthn) {
       onAuthenticate()
     }
-  }, [loading, isAuthenticated])
-
-  // focus on the username (email) field as soon as the page loads
-  const usernameEmailRef = useRef()
-  useEffect(() => {
-    usernameEmailRef.current && usernameEmailRef.current.focus()
-  }, [])
+  }, [loading, isAuthenticated, showWebAuthn])
 
   const onSubmit = async (data) => {
     const webAuthnSupported = await webAuthn.isSupported()
@@ -113,11 +107,18 @@ const LoginPage = ({ type }) => {
 
   const AuthWebAuthnPrompt = () => {
     return (
-      <div className="rw-webauthn-wrapper">
-        <h2>WebAuthn Login Enabled</h2>
-        <p>Log in with your fingerprint, face or PIN</p>
-        <div className="rw-button-group">
-          <button className="rw-button rw-button-blue" onClick={onAuthenticate}>
+      <div className="rw-webauthn-wrapper my-4 rounded-lg bg-white px-4 py-6 shadow sm:px-6 lg:px-8">
+        <h2 className="text-2xl font-semibold text-gray-800">
+          WebAuthn Login Enabled
+        </h2>
+        <p className="mt-2 text-gray-600">
+          Log in with your fingerprint, face or PIN
+        </p>
+        <div className="rw-button-group mt-4">
+          <button
+            className="rw-button rounded-md bg-teal-600 px-4 py-2 text-white hover:bg-teal-900"
+            onClick={onAuthenticate}
+          >
             Open Authenticator
           </button>
         </div>
@@ -126,17 +127,25 @@ const LoginPage = ({ type }) => {
   }
 
   const RegisterWebAuthnPrompt = () => (
-    <div className="rw-webauthn-wrapper">
-      <h2>No more Passwords!</h2>
-      <p>
-        Depending on your device you can log in with your fingerprint, face or
+    <div className="rw-webauthn-wrapper my-4 rounded-lg bg-white px-4 py-6 shadow sm:px-6 lg:px-8">
+      <h2 className="text-2xl font-semibold text-gray-800">
+        No more Passwords!
+      </h2>
+      <p className="mt-2 text-gray-600">
+        Depending on your device, you can log in with your fingerprint, face, or
         PIN next time.
       </p>
-      <div className="rw-button-group">
-        <button className="rw-button rw-button-blue" onClick={onRegister}>
+      <div className="rw-button-group mt-4">
+        <button
+          className="rw-button mr-2 rounded-md bg-teal-600 px-4 py-2 text-white hover:bg-teal-900"
+          onClick={onRegister}
+        >
           Turn On
         </button>
-        <button className="rw-button" onClick={onSkip}>
+        <button
+          className="rw-button rounded-md border border-gray-300 px-4 py-2 text-gray-800 hover:bg-gray-100"
+          onClick={onSkip}
+        >
           Skip for now
         </button>
       </div>
@@ -144,60 +153,71 @@ const LoginPage = ({ type }) => {
   )
 
   const PasswordForm = () => (
-    <Form onSubmit={onSubmit} className="rw-form-wrapper">
-      <Label
-        name="usernameEmail"
-        className="rw-label"
-        errorClassName="rw-label rw-label-error"
-      >
-        Username (Email)
-      </Label>
-      <TextField
-        name="usernameEmail"
-        className="rw-input"
-        errorClassName="rw-input rw-input-error"
-        ref={usernameEmailRef}
-        autoFocus
-        validation={{
-          required: {
-            value: true,
-            message: 'Username (Email) is required',
-          },
-        }}
-      />
+    <Form
+      onSubmit={onSubmit}
+      className="bg-white px-3 py-4 shadow sm:px-4 lg:px-6"
+    >
+      <div className="mx-auto max-w-md">
+        <Label
+          name="usernameEmail"
+          className="rw-label text-gray-800"
+          errorClassName="rw-label rw-label-error text-red-500"
+        >
+          Username (Email)
+        </Label>
+        <TextField
+          name="usernameEmail"
+          className="rw-input w-full border-gray-300 focus:border-teal-400 focus:ring focus:ring-teal-200"
+          errorClassName="rw-input rw-input-error border-red-500 focus:border-red-500 focus:ring focus:ring-red-200"
+          validation={{
+            required: {
+              value: true,
+              message: 'Username (Email) is required',
+            },
+          }}
+        />
 
-      <FieldError name="usernameEmail" className="rw-field-error" />
+        <FieldError
+          name="usernameEmail"
+          className="rw-field-error text-red-500"
+        />
 
-      <Label
-        name="password"
-        className="rw-label"
-        errorClassName="rw-label rw-label-error"
-      >
-        Password
-      </Label>
-      <PasswordField
-        name="password"
-        className="rw-input"
-        errorClassName="rw-input rw-input-error"
-        autoComplete="current-password"
-        validation={{
-          required: {
-            value: true,
-            message: 'Password is required',
-          },
-        }}
-      />
+        <Label
+          name="password"
+          className="rw-label mt-2 text-gray-800"
+          errorClassName="rw-label rw-label-error text-red-500"
+        >
+          Password
+        </Label>
+        <PasswordField
+          name="password"
+          className="rw-input w-full border-gray-300 focus:border-teal-400 focus:ring focus:ring-teal-200"
+          errorClassName="rw-input rw-input-error border-red-500 focus:border-red-500 focus:ring focus:ring-red-200"
+          autoComplete="current-password"
+          validation={{
+            required: {
+              value: true,
+              message: 'Password is required',
+            },
+          }}
+        />
 
-      <div className="rw-forgot-link">
-        <Link to={routes.forgotPassword()} className="rw-forgot-link">
-          Forgot Password?
-        </Link>
-      </div>
+        <div className="rw-forgot-link mt-2 text-right">
+          <Link
+            to={routes.forgotPassword()}
+            className="text-sm text-teal-600 hover:text-teal-900"
+          >
+            Forgot Password?
+          </Link>
+        </div>
 
-      <FieldError name="password" className="rw-field-error" />
+        <FieldError name="password" className="rw-field-error text-red-500" />
 
-      <div className="rw-button-group">
-        <Submit className="rw-button rw-button-blue">Login</Submit>
+        <div className="rw-button-group mt-4">
+          <Submit className="rw-button w-full rounded-md bg-teal-600 px-4 py-2 text-white hover:bg-teal-900">
+            Login
+          </Submit>
+        </div>
       </div>
     </Form>
   )
@@ -218,9 +238,12 @@ const LoginPage = ({ type }) => {
     if (showWebAuthn) {
       if (webAuthn.isEnabled()) {
         return (
-          <div className="rw-login-link">
-            <span>or login with </span>{' '}
-            <a href="?type=password" className="rw-link">
+          <div className="rw-login-link my-4 text-gray-800">
+            <span>or login with </span>
+            <a
+              href="?type=password"
+              className="rw-link text-teal-600 hover:text-teal-900"
+            >
               username (email) and password
             </a>
           </div>
@@ -228,9 +251,12 @@ const LoginPage = ({ type }) => {
       }
     } else {
       return (
-        <div className="rw-login-link">
-          <span>Don&apos;t have an account?</span>{' '}
-          <Link to={routes.signup()} className="rw-link">
+        <div className="rw-login-link my-4 text-gray-800">
+          <span>Don&apos;t have an account?</span>
+          <Link
+            to={routes.signup()}
+            className="rw-link ml-1 text-teal-600 hover:text-teal-900"
+          >
             Sign up!
           </Link>
         </div>
@@ -246,19 +272,20 @@ const LoginPage = ({ type }) => {
     <>
       <Metadata title="Login" />
 
-      <main className="rw-main">
+      <main className="min-h-screen overflow-x-hidden bg-gray-100 py-6">
         <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
-        <div className="rw-scaffold rw-login-container">
-          <div className="rw-segment">
-            <header className="rw-segment-header">
-              <h2 className="rw-heading rw-heading-secondary">Login</h2>
-            </header>
-
-            <div className="rw-segment-main">
-              <div className="rw-form-wrapper">{formToRender()}</div>
-            </div>
+        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="mb-4 flex w-full items-center justify-between bg-white px-4 py-6 shadow-md sm:px-6 lg:px-8">
+            <h2 className="text-2xl font-bold text-gray-800">Login</h2>
           </div>
-          {linkToRender()}
+          <div className="rw-scaffold rw-login-container rounded-lg bg-white px-4 py-6 shadow-md">
+            <div className="rw-segment">
+              <div className="rw-segment-main">
+                <div className="rw-form-wrapper">{formToRender()}</div>
+              </div>
+            </div>
+            <div className="mt-4">{linkToRender()}</div>
+          </div>
         </div>
       </main>
     </>
