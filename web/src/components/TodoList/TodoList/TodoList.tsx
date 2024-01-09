@@ -1,13 +1,16 @@
+import React, { useState } from 'react'
+
 import type {
+  CreateTodoItemInput,
   DeleteTodoListMutationVariables,
   FindTodoListById,
 } from 'types/graphql'
 
 import { Link, routes, navigate } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
+import { useMutation, useQuery } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
-import { timeTag } from 'src/lib/formatters'
+import TodoItemForm from 'src/components/TodoItem/TodoItemForm'
 
 const DELETE_TODO_LIST_MUTATION = gql`
   mutation DeleteTodoListMutation($id: Int!) {
@@ -16,7 +19,21 @@ const DELETE_TODO_LIST_MUTATION = gql`
     }
   }
 `
-
+const CREATE_TODO_ITEM_MUTATION = gql`
+  mutation CreateTodoItemMutation($input: CreateTodoItemInput!) {
+    createTodoItem(input: $input) {
+      id
+    }
+  }
+`
+const GET_TODO_LISTS_QUERY = gql`
+  query GetTodoLists {
+    todoLists {
+      id
+      title
+    }
+  }
+`
 interface Props {
   todoList: NonNullable<FindTodoListById['todoList']>
 }
@@ -31,6 +48,35 @@ const TodoList = ({ todoList }: Props) => {
       toast.error(error.message)
     },
   })
+  const [createTodoItem, { loading: mutationLoading, error: mutationError }] =
+    useMutation(CREATE_TODO_ITEM_MUTATION, {
+      onCompleted: () => {
+        toast.success('TodoItem created')
+        window.location.reload()
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    })
+
+  const {
+    data,
+    loading: queryLoading,
+    error: queryError,
+  } = useQuery(GET_TODO_LISTS_QUERY)
+
+  const onSave = (input: CreateTodoItemInput) => {
+    createTodoItem({ variables: { input } })
+  }
+
+  const combinedLoading = mutationLoading || queryLoading
+  const combinedError = mutationError || queryError
+
+  const [showAddForm, setShowAddForm] = useState(false)
+
+  const toggleAddForm = () => {
+    setShowAddForm(!showAddForm)
+  }
 
   const onDeleteClick = (id: DeleteTodoListMutationVariables['id']) => {
     if (confirm('Are you sure you want to delete todoList ' + id + '?')) {
@@ -40,39 +86,69 @@ const TodoList = ({ todoList }: Props) => {
 
   return (
     <>
-      <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-        <header className="px-4 py-5 sm:px-6 border-b border-gray-200">
-          <h2 className="text-lg leading-6 font-medium text-gray-900">
-            {todoList.title} Detail
-          </h2>
+      <div className="overflow-hidden bg-white shadow sm:rounded-lg">
+        <header className="bg-teal-600 px-4 py-5 text-white sm:px-6">
+          <h2 className="text-xl font-semibold">{todoList.title}</h2>
         </header>
-        <div className="border-t border-gray-200">
-          <dl>
-            <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Created at</dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {timeTag(todoList.createdAt)}
-              </dd>
-            </div>
-            <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Created by:</dt>
-              <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {todoList.user.email}
-              </dd>
-            </div>
-          </dl>
-        </div>
       </div>
-      <nav className="flex items-center justify-between mt-4">
+
+      {/* Todo Items List */}
+      <div className="mb-6 bg-white shadow sm:rounded-lg">
+        <div className="flex items-center justify-between border-b border-gray-200 px-4 py-5 sm:px-6">
+          <h3 className="text-lg font-medium leading-6 text-gray-900">Items</h3>
+          <button
+            onClick={toggleAddForm}
+            className="rounded bg-teal-400 px-4 py-2 font-medium text-white hover:bg-teal-500"
+          >
+            Add Item
+          </button>
+        </div>
+
+        {showAddForm && (
+          <div className="p-4">
+            {/* Your form goes here. Pre-select the todoListId radio button */}
+            <TodoItemForm
+              onSave={onSave}
+              loading={combinedLoading}
+              error={combinedError}
+              todoLists={data?.todoLists} /* other props */
+            />
+          </div>
+        )}
+
+        <ul className="divide-y divide-gray-200">
+          {todoList.items.map((item) => (
+            <li key={item.id} className="px-4 py-4 hover:bg-gray-50 sm:px-6">
+              <Link to={routes.todoItem({ id: item.id })} className="block">
+                <div className="flex items-center justify-between px-4 py-4 sm:px-6">
+                  <span
+                    className={
+                      item.isDone
+                        ? 'text-gray-500 line-through'
+                        : 'text-gray-700'
+                    }
+                  >
+                    {item.text}
+                  </span>
+                  {/* Additional item details or actions */}
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/*Buttons*/}
+      <nav className="mt-4 flex justify-end space-x-4">
         <Link
           to={routes.editTodoList({ id: todoList.id })}
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-teal-400 hover:bg-teal-900"
+          className="rounded bg-teal-400 px-4 py-2 font-medium text-white hover:bg-teal-500"
         >
           Edit
         </Link>
         <button
           type="button"
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-900"
+          className="rounded bg-red-600 px-4 py-2 font-medium text-white hover:bg-red-700"
           onClick={() => onDeleteClick(todoList.id)}
         >
           Delete

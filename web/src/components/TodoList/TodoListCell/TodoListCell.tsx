@@ -13,6 +13,11 @@ export const QUERY = gql`
       user {
         email
       }
+      items {
+        id
+        text
+        isDone
+      }
     }
   }
 `
