@@ -40,12 +40,12 @@ const TodoListsList = ({ todoLists }: FindTodoLists) => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {todoLists.map((todoList) => (
           <div
             key={todoList.id}
-            className="bg-white rounded-lg shadow overflow-hidden"
+            className="overflow-hidden rounded-lg bg-white shadow"
           >
             <div className="p-6">
               <h3 className="text-lg font-medium text-gray-900 hover:text-teal-400">
@@ -53,19 +53,13 @@ const TodoListsList = ({ todoLists }: FindTodoLists) => {
                   {truncate(todoList.title)}
                 </Link>
               </h3>
-              <p className="text-sm text-gray-600 mt-1">
+              <p className="mt-1 text-sm text-gray-600">
                 Created at: {timeTag(todoList.createdAt)}
               </p>
-              <p className="text-sm text-gray-600 mt-1">
+              <p className="mt-1 text-sm text-gray-600">
                 Created by: {truncate(todoList.user.email)}
               </p>
-              <div className="mt-4 flex justify-between items-center">
-                <Link
-                  to={routes.editTodoList({ id: todoList.id })}
-                  className="text-indigo-500 hover:text-indigo-800"
-                >
-                  Edit
-                </Link>
+              <div className="mt-4 flex items-center justify-between">
                 <button
                   type="button"
                   className="text-red-500 hover:text-red-800"
