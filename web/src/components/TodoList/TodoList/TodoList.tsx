@@ -93,7 +93,7 @@ const TodoList = ({ todoList }: Props) => {
       </div>
 
       {/* Todo Items List */}
-      <div className="mb-6 bg-white shadow sm:rounded-lg">
+      <div className="mb-6 bg-white p-1 shadow sm:rounded-lg">
         <div className="flex items-center justify-between border-b border-gray-200 px-4 py-5 sm:px-6">
           <h3 className="text-lg font-medium leading-6 text-gray-900">Items</h3>
           <button
