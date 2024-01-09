@@ -3,12 +3,12 @@ import type {
   FindTodoLists,
 } from 'types/graphql'
 
-import { Link, routes } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import { QUERY } from 'src/components/TodoList/TodoListsCell'
-import { timeTag, truncate } from 'src/lib/formatters'
+
+import TodoListCard from '../TodoListCard/TodoListCard'
 
 const DELETE_TODO_LIST_MUTATION = gql`
   mutation DeleteTodoListMutation($id: Int!) {
@@ -43,33 +43,11 @@ const TodoListsList = ({ todoLists }: FindTodoLists) => {
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {todoLists.map((todoList) => (
-          <div
+          <TodoListCard
+            todoList={todoList}
             key={todoList.id}
-            className="overflow-hidden rounded-lg bg-white shadow"
-          >
-            <div className="p-6">
-              <h3 className="text-lg font-medium text-gray-900 hover:text-teal-400">
-                <Link to={routes.todoList({ id: todoList.id })}>
-                  {truncate(todoList.title)}
-                </Link>
-              </h3>
-              <p className="mt-1 text-sm text-gray-600">
-                Created at: {timeTag(todoList.createdAt)}
-              </p>
-              <p className="mt-1 text-sm text-gray-600">
-                Created by: {truncate(todoList.user.email)}
-              </p>
-              <div className="mt-4 flex items-center justify-between">
-                <button
-                  type="button"
-                  className="text-red-500 hover:text-red-800"
-                  onClick={() => onDeleteClick(todoList.id)}
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
+            onDeleteClick={onDeleteClick}
+          />
         ))}
       </div>
     </div>
