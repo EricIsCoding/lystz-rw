@@ -16,6 +16,20 @@ const ScaffoldLayout = ({
   buttonTo,
   children,
 }: LayoutProps) => {
+  const realTitle = (title: string) => {
+    if (title === 'TodoLists') {
+      return 'Lists'
+    } else if (title === 'TodoList') {
+      return 'List'
+    } else if (title === 'TodoItem') {
+      return 'Item'
+    } else if (title === 'TodoItems') {
+      return 'Items'
+    } else {
+      return title
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-100">
       <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
@@ -26,7 +40,7 @@ const ScaffoldLayout = ({
               to={routes[titleTo]()}
               className="text-black hover:text-teal-400"
             >
-              {title}
+              {realTitle(title)}
             </Link>
           </h1>
           <div className="flex gap-4">
