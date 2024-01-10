@@ -3,7 +3,7 @@ import { Link, routes } from '@redwoodjs/router'
 
 import { truncate, timeTag } from 'src/lib/formatters'
 
-const TodoListCard = ({ todoList, onDeleteClick }) => {
+const TodoListCard = ({ todoList }) => {
   const TodoListDetails = ({ todoList }) => {
     return (
       <div className="mt-2 text-sm text-gray-600">
@@ -14,24 +14,6 @@ const TodoListCard = ({ todoList, onDeleteClick }) => {
     )
   }
 
-  const DeleteButton = (onDeleteClick) => {
-    console.log(onDeleteClick)
-    if (onDeleteClick.onDeleteClick) {
-      return (
-        <div className="mt-4 flex items-center justify-between">
-          <button
-            type="button"
-            className="text-red-500 hover:text-red-800"
-            onClick={() => onDeleteClick(todoList.id)}
-          >
-            Delete
-          </button>
-        </div>
-      )
-    } else {
-      return null
-    }
-  }
   return (
     <div className="overflow-hidden rounded-lg bg-gray-50 shadow-lg transition-shadow duration-200 hover:shadow-xl">
       <div className="p-4">
@@ -41,7 +23,6 @@ const TodoListCard = ({ todoList, onDeleteClick }) => {
           </Link>
         </h3>
         <TodoListDetails todoList={todoList} />
-        <DeleteButton onDeleteClick={onDeleteClick} />
       </div>
     </div>
   )
