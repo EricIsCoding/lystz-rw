@@ -18,16 +18,17 @@ generator client {
 // to create migrations for them and apply to your dev DB.
 // TODO: Please remove the following example:
 model User {
-  id                  Int              @id @default(autoincrement())
-  email               String           @unique
+  id                  Int               @id @default(autoincrement())
+  email               String            @unique
   hashedPassword      String
   salt                String
   resetToken          String?
   resetTokenExpiresAt DateTime?
   todoLists           TodoList[]
-  webAuthnChallenge   String?          @unique
+  webAuthnChallenge   String?           @unique
   credentials         UserCredential[]
   TodoItem            TodoItem[]
+  groups              GroupMembership[]
 }
 
 model UserCredential {
@@ -40,22 +41,43 @@ model UserCredential {
 }
 
 model TodoList {
-  id        Int        @id @default(autoincrement())
-  title     String
-  createdAt DateTime   @default(now())
-  userId    Int // Foreign key to User
-  user      User       @relation(fields: [userId], references: [id])
-  items     TodoItem[] // Relation field to TodoItem
+  id         Int        @id @default(autoincrement())
+  title      String
+  createdAt  DateTime   @default(now())
+  userId     Int // Foreign key to User
+  user       User       @relation(fields: [userId], references: [id])
+  items      TodoItem[] // Relation field to TodoItem
+  sharedWith Group[]
 }
 
 model TodoItem {
-  id         Int      @id @default(autoincrement())
-  text       String
+  id          Int      @id @default(autoincrement())
+  text        String
   description String?
-  isDone     Boolean  @default(false)
-  createdAt  DateTime @default(now())
-  todoListId Int // Foreign key to TodoList
-  todoList   TodoList @relation(fields: [todoListId], references: [id])
-  userId     Int // Foreign key to User
-  user       User     @relation(fields: [userId], references: [id])
+  isDone      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  todoListId  Int // Foreign key to TodoList
+  todoList    TodoList @relation(fields: [todoListId], references: [id])
+  userId      Int // Foreign key to User
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Group {
+  id          Int               @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime          @default(now())
+  members     GroupMembership[]
+  todoLists   TodoList[]
+}
+
+model GroupMembership {
+  id      Int    @id @default(autoincrement())
+  userId  Int
+  groupId Int
+  role    String // e.g., "member", "admin"
+  user    User   @relation(fields: [userId], references: [id])
+  group   Group  @relation(fields: [groupId], references: [id])
+
+  @@unique([userId, groupId])
 }
