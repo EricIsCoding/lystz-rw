@@ -1,44 +1,19 @@
+import { Link, routes } from '@redwoodjs/router'
+
 export default () => (
-  <main>
-    <style
-      dangerouslySetInnerHTML={{
-        __html: `
-              html, body {
-                margin: 0;
-              }
-              html * {
-                box-sizing: border-box;
-              }
-              main {
-                display: flex;
-                align-items: center;
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-                text-align: center;
-                background-color: #E2E8F0;
-                height: 100vh;
-              }
-              section {
-                background-color: white;
-                border-radius: 0.25rem;
-                width: 32rem;
-                padding: 1rem;
-                margin: 0 auto;
-                box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-              }
-              h1 {
-                font-size: 2rem;
-                margin: 0;
-                font-weight: 500;
-                line-height: 1;
-                color: #2D3748;
-              }
-            `,
-      }}
+  <div className="flex h-screen flex-col items-center justify-center bg-blue-100">
+    <h1 className="text-6xl font-bold text-blue-600">404</h1>
+    <p className="mt-2 text-2xl text-blue-800">Oops! Page not found.</p>
+    <img
+      src="web/src/pages/NotFoundPage/cute-404-image.png"
+      className="mt-5 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl"
+      alt="cute robot holding a sign that says 404"
     />
-    <section>
-      <h1>
-        <span>404 Page Not Found</span>
-      </h1>
-    </section>
-  </main>
+    <Link
+      to={routes.home()}
+      className="mt-5 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+    >
+      Go Home
+    </Link>
+  </div>
 )
