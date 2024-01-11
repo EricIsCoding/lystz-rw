@@ -19,3 +19,17 @@
   open = true
 [notifications]
   versionUpdates = ["latest"]
+
+[experimental.opentelemetry]
+	enabled = true
+	wrapApi = true
+[experimental.studio]
+  enabled = true
+  inMemory = false
+[experimental.studio.graphiql]
+  endpoint = "graphql"
+[experimental.studio.graphiql.authImpersonation]
+  authProvider = "dbAuth"
+  email = "ericjwilhite@gmail.com"
+  userId = "1"
+

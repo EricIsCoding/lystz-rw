@@ -22,4 +22,9 @@ export const handler = createGraphQLHandler({
     // Disconnect from your database with an unhandled exception.
     db.$disconnect()
   },
+  openTelemetryOptions: {
+    resolvers: true,
+    result: true,
+    variables: true,
+  },
 })
