@@ -1,11 +1,13 @@
 import { Link, routes } from '@redwoodjs/router'
 import { Toaster } from '@redwoodjs/web/toast'
 
+import { useAuth } from 'src/auth'
+
 type LayoutProps = {
   title: string
-  titleTo: string
-  buttonLabel: string
-  buttonTo: string
+  titleTo?: string
+  buttonLabel?: string
+  buttonTo?: string
   children: React.ReactNode
 }
 
@@ -16,25 +18,35 @@ const ScaffoldLayout = ({
   buttonTo,
   children,
 }: LayoutProps) => {
-  const realTitle = (title: string) => {
-    switch (title) {
-      case 'TodoLists':
-        return 'Your Lists'
-      case 'TodoItems':
-        return 'Your Items'
-      default:
-        return title
-    }
-  }
-
-  const realButtonLabel = (buttonLabel: string) => {
-    switch (buttonLabel) {
-      case 'New TodoList':
-        return 'New List'
-      case 'New TodoItem':
-        return 'New Item'
-      default:
-        return buttonLabel
+  const { logOut } = useAuth()
+  const NavButtons = () => {
+    /* if home remove return a logout button if no retun the current buttons */
+    if (title === 'Home Page') {
+      return (
+        <button
+          className="inline-flex items-center rounded-lg border border-red-600 bg-red-600 px-4 py-2 text-sm font-medium text-white transition duration-300 hover:bg-red-700"
+          onClick={logOut}
+        >
+          Logout
+        </button>
+      )
+    } else {
+      return (
+        <>
+          <Link
+            to={routes.home()}
+            className="inline-flex items-center rounded-md border border-transparent bg-teal-600 px-4 py-2 text-sm font-medium text-white hover:bg-teal-900"
+          >
+            Go Home!
+          </Link>
+          <Link
+            to={routes[buttonTo]()}
+            className="inline-flex items-center rounded-md border border-transparent bg-teal-600 px-4 py-2 text-sm font-medium text-white hover:bg-teal-900"
+          >
+            <span className="mr-2">+</span> {buttonLabel}
+          </Link>
+        </>
+      )
     }
   }
 
@@ -47,22 +59,11 @@ const ScaffoldLayout = ({
             to={routes[titleTo]()}
             className="text-gray-800 hover:text-teal-400"
           >
-            {realTitle(title)}
+            {title}
           </Link>
         </h1>
         <div className="flex gap-4">
-          <Link
-            to={routes.home()}
-            className="inline-flex items-center rounded-md border border-transparent bg-teal-600 px-4 py-2 text-sm font-medium text-white hover:bg-teal-900"
-          >
-            Go Home!
-          </Link>
-          <Link
-            to={routes[buttonTo]()}
-            className="inline-flex items-center rounded-md border border-transparent bg-teal-600 px-4 py-2 text-sm font-medium text-white hover:bg-teal-900"
-          >
-            <span className="mr-2">+</span> {realButtonLabel(buttonLabel)}
-          </Link>
+          <NavButtons />
         </div>
       </header>
       <main className="py-6">
