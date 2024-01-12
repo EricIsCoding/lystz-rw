@@ -16,18 +16,18 @@ import { useAuth } from './auth'
 const Routes = () => {
   return (
     <Router useAuth={useAuth}>
-      <Set wrap={ScaffoldLayout} title="Stores" titleTo="stores" buttonLabel="New Store" buttonTo="newStore">
-        <Route path="/stores/new" page={StoreNewStorePage} name="newStore" />
-        <Route path="/stores/{id:Int}/edit" page={StoreEditStorePage} name="editStore" />
-        <Route path="/stores/{id:Int}" page={StoreStorePage} name="store" />
-        <Route path="/stores" page={StoreStoresPage} name="stores" />
-      </Set>
       <PrivateSet unauthenticated="login">
         <Set wrap={ScaffoldLayout} title="Groups" titleTo="groups" buttonLabel="New Group" buttonTo="newGroup">
           <Route path="/groups/new" page={GroupNewGroupPage} name="newGroup" />
           <Route path="/groups/{id:Int}/edit" page={GroupEditGroupPage} name="editGroup" />
           <Route path="/groups/{id:Int}" page={GroupGroupPage} name="group" />
           <Route path="/groups" page={GroupGroupsPage} name="groups" />
+        </Set>
+        <Set wrap={ScaffoldLayout} title="Stores" titleTo="stores" buttonLabel="New Store" buttonTo="newStore">
+          <Route path="/stores/new" page={StoreNewStorePage} name="newStore" />
+          <Route path="/stores/{id:Int}/edit" page={StoreEditStorePage} name="editStore" />
+          <Route path="/stores/{id:Int}" page={StoreStorePage} name="store" />
+          <Route path="/stores" page={StoreStoresPage} name="stores" />
         </Set>
         <Set wrap={ScaffoldLayout} title="Users" titleTo="users" buttonLabel="New User" buttonTo="newUser">
           <Route path="/users/new" page={UserNewUserPage} name="newUser" />
