@@ -3,7 +3,7 @@ import type { FindStores } from 'types/graphql'
 import { Link, routes } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
-import Stores from 'src/components/Store/Stores'
+import StoreCard from '../StoreCard/StoreCard'
 
 export const QUERY = gql`
   query FindStores {
@@ -34,5 +34,11 @@ export const Failure = ({ error }: CellFailureProps) => (
 )
 
 export const Success = ({ stores }: CellSuccessProps<FindStores>) => {
-  return <Stores stores={stores} />
+  return (
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+      {stores.map((store) => {
+        return <StoreCard store={store} key={store.id} />
+      })}
+    </div>
+  )
 }
