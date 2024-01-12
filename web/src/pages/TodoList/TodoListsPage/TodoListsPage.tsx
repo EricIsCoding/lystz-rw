@@ -1,7 +1,7 @@
-import TodoListsCell from 'src/components/TodoList/TodoListsCell'
+import TodoLists from 'src/components/TodoList/TodoLists'
 
 const TodoListsPage = () => {
-  return <TodoListsCell />
+  return <TodoLists />
 }
 
 export default TodoListsPage

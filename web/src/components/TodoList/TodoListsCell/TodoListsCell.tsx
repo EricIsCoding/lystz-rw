@@ -3,19 +3,19 @@ import type { FindTodoLists } from 'types/graphql'
 import { Link, routes } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
-import TodoLists from 'src/components/TodoList/TodoLists'
+import TodoListCard from '../TodoListCard/TodoListCard'
 
 export const QUERY = gql`
-  query FindTodoLists {
-    todoLists {
+  query FindTodoLists($limit: Int) {
+    todoLists(limit: $limit) {
       createdAt
       id
       title
       user {
         email
       }
-      items {
-        text
+      _count {
+        items
       }
     }
   }
@@ -39,5 +39,11 @@ export const Failure = ({ error }: CellFailureProps) => (
 )
 
 export const Success = ({ todoLists }: CellSuccessProps<FindTodoLists>) => {
-  return <TodoLists todoLists={todoLists} />
+  return (
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+      {todoLists.map((todoList) => (
+        <TodoListCard todoList={todoList} key={todoList.id} />
+      ))}
+    </div>
+  )
 }
