@@ -10,9 +10,9 @@ datasource db {
 }
 
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = "native"
-previewFeatures = ["tracing"]
+  provider        = "prisma-client-js"
+  binaryTargets   = "native"
+  previewFeatures = ["tracing"]
 }
 
 // Define your own datamodels here and run `yarn redwood prisma migrate dev`
@@ -49,6 +49,8 @@ model TodoList {
   user       User       @relation(fields: [userId], references: [id])
   items      TodoItem[] // Relation field to TodoItem
   sharedWith Group[]
+  Store      Store      @relation(fields: [storesId], references: [id])
+  storesId   Int
 }
 
 model TodoItem {
@@ -58,7 +60,7 @@ model TodoItem {
   isDone      Boolean  @default(false)
   createdAt   DateTime @default(now())
   todoListId  Int // Foreign key to TodoList
-  todoList    TodoList @relation(fields: [todoListId], references: [id])
+  todoList    TodoList @relation(fields: [todoListId], references: [id], onDelete: Cascade)
   userId      Int // Foreign key to User
   user        User     @relation(fields: [userId], references: [id])
 }
@@ -81,4 +83,12 @@ model GroupMembership {
   group   Group  @relation(fields: [groupId], references: [id])
 
   @@unique([userId, groupId])
+}
+
+model Store {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime   @default(now())
+  todoLists   TodoList[]
 }
