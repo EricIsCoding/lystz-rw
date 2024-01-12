@@ -15,11 +15,13 @@ export const schema = gql`
 
   input CreateTodoListInput {
     title: String!
+    storeId: Int!
   }
 
   input UpdateTodoListInput {
     title: String
     userId: Int
+    storeId: Int
   }
 
   type TodoListCount {
