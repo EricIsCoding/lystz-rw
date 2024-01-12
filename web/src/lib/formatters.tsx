@@ -47,7 +47,7 @@ export const timeTag = (dateTime?: string) => {
   if (dateTime) {
     output = (
       <time dateTime={dateTime} title={dateTime}>
-        {dayjs(dateTime).format('LLL')}
+        {dayjs(dateTime).format('ll')}
       </time>
     )
   }

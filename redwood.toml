@@ -21,10 +21,10 @@
   versionUpdates = ["latest"]
 
 [experimental.opentelemetry]
-	enabled = true
+	enabled = false
 	wrapApi = true
 [experimental.studio]
-  enabled = true
+  enabled = false
   inMemory = false
 [experimental.studio.graphiql]
   endpoint = "graphql"
