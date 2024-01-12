@@ -6,10 +6,10 @@ export const schema = gql`
     userId: Int!
     user: User!
     items: [TodoItem]!
+    _count: TodoListCount
   }
-
   type Query {
-    todoLists: [TodoList!]! @requireAuth
+    todoLists(limit: Int): [TodoList!]! @requireAuth
     todoList(id: Int!): TodoList @requireAuth
   }
 
@@ -20,6 +20,10 @@ export const schema = gql`
   input UpdateTodoListInput {
     title: String
     userId: Int
+  }
+
+  type TodoListCount {
+    items: Int!
   }
 
   type Mutation {
