@@ -48,7 +48,7 @@ const NewTodoItem = () => {
   const combinedError = mutationError || queryError
 
   return (
-    <div className="bg-white shadow-md rounded-lg overflow-hidden">
+    <div className="overflow-hidden rounded-lg bg-white shadow-md">
       <header className="bg-gray-100 px-4 py-3">
         <h2 className="text-xl font-semibold text-gray-800">New TodoItem</h2>
       </header>
