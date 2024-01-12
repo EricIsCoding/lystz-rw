@@ -6,10 +6,20 @@ import type {
 
 import { db } from 'src/lib/db'
 
-export const todoLists: QueryResolvers['todoLists'] = () => {
-  return db.todoList.findMany({
+export const todoLists: QueryResolvers['todoLists'] = async ({ limit }) => {
+  const data = await db.todoList.findMany({
     where: { userId: context.currentUser.id },
+    take: limit,
+    include: {
+      _count: {
+        select: { items: true },
+      },
+    },
   })
+
+  /* takes the data and turns _count into count with the items value as  */
+
+  return data
 }
 
 export const todoList: QueryResolvers['todoList'] = ({ id }) => {
