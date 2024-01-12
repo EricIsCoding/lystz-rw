@@ -1,7 +1,7 @@
 import type { CreateTodoListInput } from 'types/graphql'
 
 import { navigate, routes } from '@redwoodjs/router'
-import { useMutation } from '@redwoodjs/web'
+import { useMutation, useQuery } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import TodoListForm from 'src/components/TodoList/TodoListForm'
@@ -13,11 +13,18 @@ const CREATE_TODO_LIST_MUTATION = gql`
     }
   }
 `
+const GET_STORES_QUERY = gql`
+  query GetStores {
+    stores {
+      id
+      name
+    }
+  }
+`
 
 const NewTodoList = () => {
-  const [createTodoList, { loading, error }] = useMutation(
-    CREATE_TODO_LIST_MUTATION,
-    {
+  const [createTodoList, { error: mutationError, loading: mutationLoading }] =
+    useMutation(CREATE_TODO_LIST_MUTATION, {
       onCompleted: () => {
         toast.success('TodoList created')
         navigate(routes.todoLists())
@@ -25,8 +32,16 @@ const NewTodoList = () => {
       onError: (error) => {
         toast.error(error.message)
       },
-    }
-  )
+    })
+
+  const {
+    data,
+    loading: queryLoading,
+    error: queryError,
+  } = useQuery(GET_STORES_QUERY)
+
+  const combinedLoading = mutationLoading || queryLoading
+  const combinedError = mutationError || queryError
 
   const onSave = (input: CreateTodoListInput) => {
     createTodoList({ variables: { input } })
@@ -38,7 +53,12 @@ const NewTodoList = () => {
         <h2 className="rw-heading rw-heading-secondary">New TodoList</h2>
       </header>
       <div className="rw-segment-main">
-        <TodoListForm onSave={onSave} loading={loading} error={error} />
+        <TodoListForm
+          onSave={onSave}
+          loading={combinedLoading}
+          error={combinedError}
+          stores={data?.stores}
+        />
       </div>
     </div>
   )
